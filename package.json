@@ -1,13 +1,28 @@
 {
-  "name": "Test",
-  "description": "Test",
-  "version": "0.0.0",
-  "main": "bot.js",
+  "name": "frenchbot",
+  "version": "1.0.0",
+  "description": "some weird roblox bot",
+  "main": "index.js",
   "scripts": {
-    "start": "node bot.js"
+    "test": "eslint . && eslint test/. --env mocha && mocha",
+    "start": "node index.js",
+    "fix": "eslint . --fix && eslint test/. --env mocha --fix"
   },
+  "engines": {
+    "node": "8.9.4"
+  },
+  "author": "ethanlaj#8805",
+  "license": "ISC",
   "dependencies": {
-    "discord.js": "11.1.0",
-    "request": "2.81.0"
+    "discord.js": "^11.4.0",
+    "ms": "2.1.1",
+    "roblox-js": "4.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-plugin-json": "^1.2.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "ndb": "^1.0.23"
   }
 }
