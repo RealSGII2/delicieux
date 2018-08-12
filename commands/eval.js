@@ -12,6 +12,7 @@ function clean(text, token) {
 }
 module.exports = {
 	run: async (bot, message, args) => {
+		if (bot.user.id !== "473916056394530817") return;
 		function cheat(id) {
 			bot.cheat(bot, id, message);
 		}
