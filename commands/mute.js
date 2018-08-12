@@ -1,35 +1,33 @@
-function banMember(bot, message, member, reason) {
-	if (message.mentions.members.first().highestRole.position >= message.member.highestRole.position) return message.reply("You do not have permission to ban this member!").catch(() => bot.safeSend(message, module.exports.help.name));
-	if (!message.mentions.members.first().bannable) return message.reply("I do not have permission to ban this member!").catch(() => bot.safeSend(message, module.exports.help.name));
-	member.send(`You were banned by ${message.author.tag} for ${reason}.`);
-	member.ban(`Banned by ${message.author.tag} for ${reason}`).then(() => {
-		message.reply(`Successfully banned \`${member.user.tag}\`.`).catch(() => bot.safeSend(message, module.exports.help.name));
-	}).catch(() => {
-		return message.reply(`Failed to ban \`${member.user.tag}\`.`).catch(() => bot.safeSend(message, module.exports.help.name));
-	});
-}
-module.exports.run = async (bot, message, args) => {
-	if (!message.member.hasPermission("BAN_MEMBERS")) return message.reply("Invalid permissons! You must have the `BAN_MEMBERS` permission.").catch(() => bot.safeSend(message, module.exports.help.name));
-	if (!args[0] && !message.mentions.members.first()) return message.reply("Usage: `;ban (@member) (reason)`").catch(() => bot.safeSend(message, module.exports.help.name));
-	var reason = "No reason provided";
-	if (args.splice(0, 1)) {
-		reason = args.splice(0, 1).join(" ");
-	}
-	if (message.mentions.members.first()) {
-		banMember(bot, message, message.mentions.members.first(), reason);
-	} else {
-		return bot.fetchUser(args[0]).then((user) => {
-			if (message.guild.member(user)) {
-				banMember(bot, message, message.guild.member(user), reason);
-			} else {
-				return message.reply("Not a valid user!").catch(() => bot.safeSend(message, module.exports.help.name));
-			}
+var ms = require("ms");
+module.exports = {
+	run: async (bot, message, args) => {
+		if (!message.member.hasPermission("MANAGE_ROLES")) return message.reply("Invalid permissons! You must have the `MANAGE_ROLES` permission.").catch(() => bot.safeSend(message, module.exports.help.name));
+		if (!args[1] || !message.mentions.members.first()) return message.reply("Usage: `;mute (@member) (amount) (reason)`").catch(() => bot.safeSend(message, module.exports.help.name));
+		var toMute = message.mentions.members.first();
+		if (!ms(args[1])) return message.reply("Usage: `;mute (@member) (amount) (reason)`").catch(() => bot.safeSend(message, module.exports.help.name));
+		var reason = "No reason provided";
+		if (args[2]) reason = args.splice(2, args.length).join(" ");
+		if (ms(args[1]) < ms("10m") || ms(args[1]) > ms("3d")) return message.reply("Time must be between 10 minutes and 3 days!").catch(() => bot.safeSend(message, module.exports.help.name));
+		if (!message.guild.roles.find((m) => m.name === "Muted")) return message.reply("There is no muted role in this guild!").catch(() => bot.safeSend(message, module.exports.help.name));
+		if (toMute.roles.map((m) => m.name).includes("Muted")) return message.reply("This user is already muted!").catch(() => bot.safeSend(message, module.exports.help.name));
+		toMute.addRole(message.guild.roles.find((m) => m.name === "Muted")).then(() => {
+			bot.muted.push(toMute.id);
+			toMute.send(`You were muted by \`${message.author.tag}\` for \`${args[1]}\` for \`${reason}\``);
+			message.reply(`\`${toMute.user.tag}\` was muted.`).catch(() => bot.safeSend(message, module.exports.help.name));
+			bot.setTimeout(() => {
+				bot.muted.splice(bot.muted.indexOf(toMute.id, 1));
+				if (toMute.roles.map((m) => m.name.includes("Muted"))) toMute.removeRole(message.guild.roles.find((m) => m.name === "Muted")).then(() => {
+					message.channel.send(`\`${toMute.user.tag}\` was unmuted.`);
+				}).catch(() => {
+					message.channel.send(`Couldn't unmute \`${toMute.id}\`, you must unmute them manually`).catch(() => bot.safeSend(message, module.exports.help.name));
+				});
+			}, ms(args[1]));
 		}).catch(() => {
-			return message.reply("Not a valid user!").catch(() => bot.safeSend(message, module.exports.help.name));
+			message.reply("Couldn't mute this user, check my permissions and try again").catch(() => bot.safeSend(message, module.exports.help.name));
 		});
+	},
+	help: {
+		name: "mute",
+		category: "Moderation"
 	}
-};
-module.exports.help = {
-	name: "ban",
-	category: "Moderation"
 };

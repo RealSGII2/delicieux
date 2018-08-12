@@ -1,16 +1,15 @@
-module.exports.run = async (bot, message, args) => {
-	if (!args[2]) return message.reply("Usage: `;setstatus (status: online, idle, invisible, dnd) (type: playing, listening, watching) (description)`");
-	var status = args[0].toLowerCase().trim(),
-		type = args[2].toUpperCase().trim(),
-		desc = args.splice(1, 2).join(" ").trim();
-	console.log(type);
-	bot.user.setStatus(status).then(() => {
-		bot.user.setActivity(desc, {type: type}).then((e) => {
-			console.log(e);
+module.exports = {
+	run: async (bot, message, args) => {
+		if (!bot.developers.includes(message.author.id)) return message.reply("This command is restricted to bot developers.");
+		if (!args[2]) return message.reply("Usage: `;setstatus (status: online, idle, invisible, dnd) (type: playing, listening, watching) (description)`").catch(() => bot.safeSend(message, module.exports.help.name));
+		bot.user.client.user.setPresence({ game: { type: args[1].toUpperCase(), name: args.splice(2, args.length).join(" ") }, status: args[0].toLowerCase() }).then(() => {
+			message.reply(":white_check_mark: All set!").catch(() => bot.safeSend(message, module.exports.help.name));
+		}).catch(() => {
+			message.reply(":x: Couldn't change the status!").catch(() => bot.safeSend(message, module.exports.help.name));
 		});
-	});
-};
-module.exports.help = {
-	name: "setstatus",
-	category: "Developer"
+	},
+	help: {
+		name: "setstatus",
+		category: "Developer"
+	}
 };
