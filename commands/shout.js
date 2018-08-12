@@ -11,6 +11,6 @@ module.exports = {
 	},
 	help: {
 		name: "shout",
-		category: "RRRRRRRR"
+		category: "Other"
 	}
 };
