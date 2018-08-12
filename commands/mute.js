@@ -9,6 +9,7 @@ module.exports = {
 		if (args[2]) reason = args.splice(2, args.length).join(" ");
 		if (ms(args[1]) < ms("10m") || ms(args[1]) > ms("3d")) return message.reply("Time must be between 10 minutes and 3 days!").catch(() => bot.safeSend(message, module.exports.help.name));
 		if (toMute.highestRole.position >= message.member.highestRole.position) return message.reply("You do not have permission to mute this member!").catch(() => bot.safeSend(message, module.exports.help.name));
+		if (toMute.highestRole.position >= message.guild.me.highestRole.position) return message.reply("I do not have permission to mute this member!").catch(() => bot.safeSend(message, module.exports.help.name));
 		if (!message.guild.roles.find((m) => m.name === "Muted")) return message.reply("There is no muted role in this guild!").catch(() => bot.safeSend(message, module.exports.help.name));
 		if (toMute.roles.map((m) => m.name).includes("Muted")) return message.reply("This user is already muted!").catch(() => bot.safeSend(message, module.exports.help.name));
 		toMute.addRole(message.guild.roles.find((m) => m.name === "Muted")).then(() => {
