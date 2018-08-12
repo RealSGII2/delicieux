@@ -51,7 +51,7 @@ module.exports.run = async () => {
 		}
 	});
 	bot.safeSend = function(message, name) {
-		return message.author.send(`You attempted to use the \`${name}\` command in ${message.channel.toString()}, but I do not have permission to talk there.`);
+		return message.author.send(`You attempted to use the \`${name}\` command in ${message.channel.toString()}, but I cannot chat there.`);
 	};
 	bot.on("ready", async () => {
 		console.log("-------------------------------------------------------------");
