@@ -10,7 +10,7 @@ module.exports = {
 			let specificCommands = bot.allcommands.filter((m) => m.help.category === category);
 			helpEmbed.addField(category, `\`${specificCommands.map((m) => m.help.name).join(", ")}\``);
 		}
-		message.channel.send(helpEmbed).catch(() => bot.safeSend(message, module.exports.help.name));
+		message.channel.send(helpEmbed).catch(() => bot.safeSend(message, module.exports.help.name)).catch(() => bot.safeSend(message, module.exports.help.name));
 	},
 	help : {
 		name: "help",
