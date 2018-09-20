@@ -7,7 +7,7 @@ module.exports.run = async () => {
 	bot.commands = { enabledCommands: new Discord.Collection(), disabledCommands: [] };
 	bot.allcommands = new Discord.Collection();
 	bot.loaders = { enabledLoaders: [], disabledLoaders: [] };
-	bot.developers = ["293060399106883584", "245877990938902529"];
+	bot.developers = ["293060399106883584", "245877990938902529", "258706134850863106"];
 	bot.muted = [];
 
 	var loadFile = fs.readdirSync(__dirname + "/load");
