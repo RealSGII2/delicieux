@@ -1,4 +1,4 @@
-var rbx = require("roblox-js");
+var rbx = require("noblox.js");
 module.exports = {
 	run: async (bot, message, args) => {
 		if (!message.member.roles.get("432671352743526402")) return message.reply("Invalid permissons! You must have the `Leadership Team` role.").catch(() => bot.safeSend(message, module.exports.help.name));

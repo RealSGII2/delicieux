@@ -1,4 +1,4 @@
-var rbx = require("roblox-js");
+var rbx = require("noblox.js");
 module.exports = {
 	run: async (bot, message, args) => {
 		if (!message.member.hasPermission("MANAGE_ROLES") || message.guild.id !== "432666063562342410" && !bot.developers.includes(message.author.id)) return message.reply("Invalid permissons! You must have the `MANAGE_ROLES` permission.").catch(() => bot.safeSend(message, module.exports.help.name));

@@ -1,7 +1,7 @@
 const botconfig = require("./botconfig.js");
 const Discord = require("discord.js");
 const fs = require("fs");
-const rbx = require("roblox-js");
+const rbx = require("noblox.js");
 module.exports.run = async () => {
 	const bot = new Discord.Client({ disableEveryone: true, fetchAllMembers: true });
 	bot.commands = { enabledCommands: new Discord.Collection(), disabledCommands: [] };
