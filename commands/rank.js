@@ -28,8 +28,8 @@ module.exports = {
 module.exports.help = {
 name: "rank",
 usage: "rank",
-description: "pings the bot",
-longdes: "Pings the bot.",
-mentionedperm: "None",
+description: "Ranks a user in the group.",
+longdes: "Ranks a user in the group.",
+mentionedperm: "Bot Admin Role",
 category: "Utility"
 }
